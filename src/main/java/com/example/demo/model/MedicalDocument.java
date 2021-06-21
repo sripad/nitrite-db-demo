@@ -3,10 +3,10 @@ package com.example.demo.model;
 import java.io.IOException;
 import java.io.Serializable;
 
-import org.dizitart.no2.IndexType;
-import org.dizitart.no2.objects.Id;
-import org.dizitart.no2.objects.Index;
-import org.dizitart.no2.objects.Indices;
+import org.dizitart.no2.index.IndexType;
+import org.dizitart.no2.repository.annotations.Id;
+import org.dizitart.no2.repository.annotations.Index;
+import org.dizitart.no2.repository.annotations.Indices;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.service.FileService;
@@ -24,6 +24,7 @@ public class MedicalDocument implements Serializable {
 	private String fileDownloadUri;
 	private String fileType;
 	private Long size;
+	
 	private byte[] content;
 
 	public MedicalDocument() {
@@ -87,7 +88,7 @@ public class MedicalDocument implements Serializable {
 		this.content = content;
 	}
 	
-	public static MedicalDocument newMedicalDocument(MultipartFile file, long id) throws IOException {
+	public static MedicalDocument newMedicalDocument(MultipartFile file, Long id) throws IOException {
 		MedicalDocument medicalDocument = new MedicalDocument();
 		medicalDocument.setMedicalDocumentId(id);
 		String fileName = FileService.getOriginalFileName(file);

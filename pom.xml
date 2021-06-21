@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.5.0</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
 	<artifactId>nitrite-db-demo</artifactId>
@@ -14,8 +15,22 @@
 	<name>nitrite-db-demo</name>
 	<description>Nitrite Demo project for Spring Boot</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>8</java.version>
 	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.dizitart</groupId>
+				<artifactId>nitrite-bom</artifactId>
+				<version>4.0.0-SNAPSHOT</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -31,13 +46,50 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
-		                                    
+
+
 		<!-- https://mvnrepository.com/artifact/org.dizitart/nitrite -->
 		<dependency>
-		    <groupId>org.dizitart</groupId>
-		    <artifactId>nitrite</artifactId>
-		    <version>3.4.3</version>
+			<groupId>org.dizitart</groupId>
+			<artifactId>nitrite</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.dizitart</groupId>
+			<artifactId>nitrite-mvstore-adapter</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.dizitart</groupId>
+			<artifactId>nitrite-rocksdb-adapter</artifactId>
+		</dependency>
+
+		<!-- https://github.com/nitrite/nitrite-java/discussions/483 I would not 
+			suggest to use MapDb yet, because its performance is not at per. If you are 
+			using nitrite in desktop or android app, go for mvstore, but if you are using 
+			it for server side and want to deal with millions of records then go for 
+			rocksdb. -->
+
+		<dependency>
+			<groupId>org.dizitart</groupId>
+			<artifactId>nitrite-mapdb-adapter</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.dizitart</groupId>
+			<artifactId>nitrite-jackson-mapper</artifactId>
+		</dependency>
+
+		<!-- For nitrite db replication -->
+		<dependency>
+			<groupId>org.dizitart</groupId>
+			<artifactId>nitrite-replication</artifactId>
+		</dependency>
+
+		<!-- For nitrite db import/export -->
+		<dependency>
+			<groupId>org.dizitart</groupId>
+			<artifactId>nitrite-support</artifactId>
 		</dependency>
 
 	</dependencies>
@@ -48,7 +100,36 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>allow-snapshots</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<repositories>
+				<repository>
+					<id>snapshots-repo</id>
+					<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+					<releases>
+						<enabled>false</enabled>
+					</releases>
+					<snapshots>
+						<enabled>true</enabled>
+					</snapshots>
+				</repository>
+			</repositories>
+		</profile>
+	</profiles>
 
 </project>

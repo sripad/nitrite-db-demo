@@ -3,10 +3,11 @@ package com.example.demo.model;
 import java.io.Serializable;
 import java.util.Date;
 
-import org.dizitart.no2.IndexType;
-import org.dizitart.no2.objects.Id;
-import org.dizitart.no2.objects.Index;
-import org.dizitart.no2.objects.Indices;
+import org.dizitart.no2.index.IndexType;
+import org.dizitart.no2.repository.annotations.Id;
+import org.dizitart.no2.repository.annotations.Index;
+import org.dizitart.no2.repository.annotations.Indices;
+
 
 @Indices({
     @Index(value = "name", type = IndexType.Unique),

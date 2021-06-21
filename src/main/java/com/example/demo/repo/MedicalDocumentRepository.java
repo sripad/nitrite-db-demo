@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.dizitart.no2.Nitrite;
-import org.dizitart.no2.WriteResult;
-import org.dizitart.no2.objects.ObjectRepository;
+import org.dizitart.no2.common.WriteResult;
+import org.dizitart.no2.repository.ObjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,12 +14,17 @@ import com.example.demo.model.MedicalDocument;
 @Component
 public class MedicalDocumentRepository {
 
+	@Autowired
+	NitriteDbConnection nitriteDbConnection;
+
 	private Nitrite db;
 	private ObjectRepository<MedicalDocument> repository;
 
 	@Autowired
-	public MedicalDocumentRepository() {
-		db = NitriteDbConnection.getConnection();
+	public MedicalDocumentRepository(NitriteDbConnection nitriteDbConnection) {
+		super();
+		this.nitriteDbConnection = nitriteDbConnection;
+		db = nitriteDbConnection.getConnection();
 		repository = db.getRepository(MedicalDocument.class);
 	}
 

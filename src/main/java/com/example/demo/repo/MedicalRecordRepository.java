@@ -3,10 +3,10 @@ package com.example.demo.repo;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.dizitart.no2.FindOptions;
 import org.dizitart.no2.Nitrite;
-import org.dizitart.no2.WriteResult;
-import org.dizitart.no2.objects.ObjectRepository;
+import org.dizitart.no2.common.WriteResult;
+import org.dizitart.no2.filters.Filter;
+import org.dizitart.no2.repository.ObjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,12 +15,17 @@ import com.example.demo.model.MedicalRecord;
 @Component
 public class MedicalRecordRepository {
 
+	@Autowired
+	NitriteDbConnection nitriteDbConnection;
+
 	private Nitrite db;
 	private ObjectRepository<MedicalRecord> repository;
 
 	@Autowired
-	public MedicalRecordRepository() {
-		db = NitriteDbConnection.getConnection();
+	public MedicalRecordRepository(NitriteDbConnection nitriteDbConnection) {
+		super();
+		this.nitriteDbConnection = nitriteDbConnection;
+		db = nitriteDbConnection.getConnection();
 		repository = db.getRepository(MedicalRecord.class);
 	}
 
@@ -50,7 +55,7 @@ public class MedicalRecordRepository {
 	public List<MedicalRecord> find(int offset, int size) {
 		List<MedicalRecord> medicalRecords = new ArrayList<MedicalRecord>();
 		try {
-			medicalRecords = repository.find(FindOptions.limit(offset, size)).toList();
+			medicalRecords = repository.find(Filter.ALL).toList();
 		} catch (Exception e) {
 			System.out.println("Unable to find transactions. ");
 			e.printStackTrace();

@@ -34,4 +34,7 @@ build/
 
 ### Nitrite db ###
 *.db
+db
 
+# Graddle
+.graddle
